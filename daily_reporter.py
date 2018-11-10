@@ -91,7 +91,6 @@ def read_config(conf):
     config['PROJECT_PATHS'] = conf.get("config", "PROJECT_PATHS")
     config['TRELLO_KEY'] = conf.get("config", "TRELLO_KEY")
     config['TRELLO_TOKEN'] = conf.get("config", "TRELLO_TOKEN")
-    config['IS_SEND'] = conf.getboolean("config", "IS_SEND")
     config['TRELLO_COMPLETE_LIST_ID'] = conf.get(
         "config", "TRELLO_COMPLETE_LIST_ID")
 
@@ -101,11 +100,7 @@ if __name__ == '__main__':
     fp = r"/Users/wjy/Documents/pdd/daily_reporter/daily_reporter.ini"
     conf.read(fp)
     read_config(conf)
-    if not config['IS_SEND']:
-        content = getMailContent()
-        if len(content) > 0:
-            send_email(content, config['MINE_MAIL_ADDRESS'], config['RECEIVER'], config['CC'], "日报-望远镜-%s" %
-                       time.strftime("%Y%m%d", time.localtime()), config['PASSWORD'])
-            conf.set('config', 'IS_SEND', 'True')
-            with open(fp, 'w') as fw:  # 循环写入
-                conf.write(fw)
+    content = getMailContent()
+    if len(content) > 0:
+        send_email(content, config['MINE_MAIL_ADDRESS'], config['RECEIVER'], config['CC'], "日报-望远镜-%s" %
+                   time.strftime("%Y%m%d", time.localtime()), config['PASSWORD'])
