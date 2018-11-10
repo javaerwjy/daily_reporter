@@ -104,3 +104,6 @@ if __name__ == '__main__':
     if len(content) > 0:
         send_email(content, config['MINE_MAIL_ADDRESS'], config['RECEIVER'], config['CC'], "日报-望远镜-%s" %
                    time.strftime("%Y%m%d", time.localtime()), config['PASSWORD'])
+    else:
+        send_email("记得发日报", config['MINE_MAIL_ADDRESS'], config['MINE_MAIL_ADDRESS'],
+                   config['MINE_MAIL_ADDRESS'], "日报告警", config['PASSWORD'])
