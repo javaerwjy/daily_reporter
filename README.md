@@ -16,6 +16,7 @@ PROJECT_PATHS=/Users/wjy/Documents/volantis/lith-ui,/Users/wjy/Documents/volanti
 TRELLO_KEY=
 TRELLO_TOKEN=
 TRELLO_COMPLETE_LIST_ID=
+IS_SEND=
 ```
 
 2.crontab -e 添加定时任务
