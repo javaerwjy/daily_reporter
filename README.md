@@ -26,3 +26,5 @@ LC_CTYPE=de_DE.UTF-8
 PYTHONIOENCODING=utf8
 */1 * * * * source /Users/wjy/.zshrc && python3 /Users/wjy/Documents/pdd/daily_reporter/daily_reporter.py 2>&1 | tee -a /Users/wjy/daily_reporter.log
 ```
+
+3.crontab不支持相对路径，得手动修改代码中配置文件的路径

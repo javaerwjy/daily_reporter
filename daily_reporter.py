@@ -15,7 +15,8 @@ import configparser
 
 config = {}
 
-def send_email(content,from_addr, to_addr, cc_addr, subject, password):
+
+def send_email(content, from_addr, to_addr, cc_addr, subject, password):
     msg = MIMEText(content, 'html', 'utf-8')
     msg['From'] = u'<%s>' % from_addr
     msg['To'] = u'<%s>' % to_addr
@@ -79,9 +80,8 @@ def filter_card(val):
         date_str, '%Y-%m-%d%H:%M:%S') + datetime.timedelta(hours=8)).strftime("%Y-%m-%d")
     return today == card_day
 
-def read_config():
-    conf = configparser.SafeConfigParser()
-    conf.read("daily_reporter.ini")
+
+def read_config(conf):
     config['SMTP_SERVER'] = conf.get("config", "SMTP_SERVER")
     config['SMTP_SERVER_PORT'] = conf.get("config", "SMTP_SERVER_PORT")
     config['MINE_MAIL_ADDRESS'] = conf.get("config", "MINE_MAIL_ADDRESS")
@@ -91,11 +91,21 @@ def read_config():
     config['PROJECT_PATHS'] = conf.get("config", "PROJECT_PATHS")
     config['TRELLO_KEY'] = conf.get("config", "TRELLO_KEY")
     config['TRELLO_TOKEN'] = conf.get("config", "TRELLO_TOKEN")
-    config['TRELLO_COMPLETE_LIST_ID'] = conf.get("config", "TRELLO_COMPLETE_LIST_ID")
+    config['IS_SEND'] = conf.getboolean("config", "IS_SEND")
+    config['TRELLO_COMPLETE_LIST_ID'] = conf.get(
+        "config", "TRELLO_COMPLETE_LIST_ID")
+
 
 if __name__ == '__main__':
-    read_config()
-    content = getMailContent();
-    if len(content) >0:
-        send_email(content,config['MINE_MAIL_ADDRESS'], config['RECEIVER'], config['CC'], "日报-望远镜-%s" %
-                time.strftime("%Y%m%d", time.localtime()), config['PASSWORD'])
+    conf = configparser.SafeConfigParser()
+    fp = r"/Users/wjy/Documents/pdd/daily_reporter/daily_reporter.ini"
+    conf.read(fp)
+    read_config(conf)
+    if not config['IS_SEND']:
+        content = getMailContent()
+        if len(content) > 0:
+            send_email(content, config['MINE_MAIL_ADDRESS'], config['RECEIVER'], config['CC'], "日报-望远镜-%s" %
+                       time.strftime("%Y%m%d", time.localtime()), config['PASSWORD'])
+            conf.set('config', 'IS_SEND', 'True')
+            with open(fp, 'w') as fw:  # 循环写入
+                conf.write(fw)
