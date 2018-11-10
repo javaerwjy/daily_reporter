@@ -97,7 +97,7 @@ def read_config(conf):
 
 if __name__ == '__main__':
     conf = configparser.SafeConfigParser()
-    fp = r"/Users/wjy/Documents/pdd/daily_reporter/daily_reporter.ini"
+    fp = r"/daily_reporter.ini"
     conf.read(fp)
     read_config(conf)
     content = getMailContent()
