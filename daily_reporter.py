@@ -70,7 +70,7 @@ def getMailContent():
 
 
 def filter_commit(val):
-    return 'Merge' not in val and len(val) > 0
+    return '#DR' in val and len(val) > 0
 
 
 def filter_card(val):
